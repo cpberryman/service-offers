@@ -19,9 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import com.lordofthejars.nosqlunit.annotation.ShouldMatchDataSet;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Currency;
 import java.util.List;
-import java.util.Set;
 
 import static com.berryman.offers.test.util.TestsHelper.*;
 import static com.lordofthejars.nosqlunit.mongodb.MongoDbRule.MongoDbRuleBuilder.newMongoDbRule;
@@ -60,10 +58,6 @@ public class OffersRepositoryTest {
         assertThat(offerList.get(0).getPrice(), is(TEST_OFFER_PRICE));
         assertThat(offerList.get(0).getCurrency(), is(TEST_OFFER_CURRENCY));
         assertThat(offerList.get(0).isExpired(), is(false));
-
-
-//        Set<Currency> foo =
-//                Currency.getAvailableCurrencies().forEach(c -> System.out.println(c));
     }
 
     @Test

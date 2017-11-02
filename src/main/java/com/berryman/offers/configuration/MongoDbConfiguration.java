@@ -13,9 +13,9 @@ import java.net.UnknownHostException;
 /**
  * @author chris berryman.
  */
-//@Configuration
-//@EnableMongoRepositories//(basePackages = "com.berryman.offers")
-//@ComponentScan(basePackageClasses = { OffersRepository.class })
+@Configuration
+@EnableMongoRepositories
+@ComponentScan(basePackageClasses = { OffersRepository.class })
 public class MongoDbConfiguration extends AbstractMongoConfiguration {
 
     @Override
