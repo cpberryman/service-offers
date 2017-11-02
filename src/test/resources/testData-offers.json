@@ -1,0 +1,22 @@
+{
+  "offer": [
+    {
+      "_id": 1,
+      "price": 18.50,
+      "currency": "JPY",
+      "expired": false
+    },
+    {
+      "_id": 2,
+      "price": 49.99,
+      "currency": "NOK",
+      "expired": false
+    },
+    {
+      "_id": 3,
+      "price": 22.00,
+      "currency": "JPY",
+      "expired": true
+    }
+  ]
+}

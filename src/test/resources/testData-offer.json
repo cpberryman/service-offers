@@ -1,0 +1,10 @@
+{
+  "offer": [
+    {
+      "_id": "1",
+      "price": 18.50,
+      "currency": "JPY",
+      "expired": false
+    }
+  ]
+}
