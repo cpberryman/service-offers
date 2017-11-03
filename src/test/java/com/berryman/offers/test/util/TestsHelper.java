@@ -1,6 +1,10 @@
 package com.berryman.offers.test.util;
 
 import com.berryman.offers.model.Offer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +14,7 @@ import java.util.List;
  */
 public final class TestsHelper {
 
+    public static final String TEST_OFFER_JSON = "{\"_id\": \"1\", \"price\": \"18.50\", \"currency\": \"JPY\",\"expired\": false}";
     public static final String TEST_DB_NAME = "test-offers-db";
     public static final String TEST_MAPPING_BASE_PACKAGE_NAME = "com.berryman.offers.dao";
     public static final String TEST_OFFER_ID = "1";
@@ -18,6 +23,8 @@ public final class TestsHelper {
     public static final String TEST_OFFER_CURRENCY_INVALID = "foo!";
     public static final double TEST_OFFER_PRICE = 18.50;
     public static final double ANOTHER_TEST_OFFER_PRICE = 22.00;
+
+    public static final MediaType APPLICATION_JSON = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype());
 
     public static Offer stubOffer() {
         final Offer offer = new Offer();
@@ -45,4 +52,12 @@ public final class TestsHelper {
         offerList.add(stubOffer());
         return offerList;
     }
+
+    public static String testOfferAsJson(Offer offer) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+        ObjectWriter objectWriter = mapper.writer().withDefaultPrettyPrinter();
+        return objectWriter.writeValueAsString(offer);
+    }
+
 }

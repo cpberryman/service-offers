@@ -9,16 +9,18 @@ import java.util.List;
  */
 public interface OffersService {
 
-    Offer createOffer(Offer offer);
+    Offer createOffer(final Offer offer);
 
     List<Offer> findActiveOffers();
 
     List<Offer> findExpiredOffers();
 
-    Offer findOfferById(String id);
+    Offer findOfferById(final String id);
 
-    List<Offer> findOffersByPrice(double price);
+    List<Offer> findOffersByPrice(final double price);
 
-    List<Offer> findOffersByCurrency(String currency);
+    List<Offer> findOffersByCurrency(final String currency);
+
+    Offer cancelOffer(final String id);
 
 }

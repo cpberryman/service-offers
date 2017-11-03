@@ -2,6 +2,7 @@ package com.berryman.offers.service.impl;
 
 import com.berryman.offers.dao.OffersRepository;
 import com.berryman.offers.exception.InvalidCurrencyException;
+import com.berryman.offers.exception.OffersSystemErrorException;
 import com.berryman.offers.model.Offer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,9 @@ import java.util.List;
 import static com.berryman.offers.test.util.TestsHelper.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -43,8 +47,7 @@ public class OffersServiceImplTest {
 
     @Test
     public void shouldFindActiveOffers() {
-        final List<Offer> offerList = stubOfferList();
-        when(offersRepository.findAll()).thenReturn(offerList);
+        when(offersRepository.findAll()).thenReturn(stubOfferList());
 
         List<Offer> expectedOfferList = offersService.findActiveOffers();
 
@@ -57,8 +60,7 @@ public class OffersServiceImplTest {
 
     @Test
     public void shouldFindExpiredOffers() {
-        final List<Offer> offerList = stubOfferList();
-        when(offersRepository.findAll()).thenReturn(offerList);
+        when(offersRepository.findAll()).thenReturn(stubOfferList());
 
         List<Offer> expectedOfferList = offersService.findExpiredOffers();
 
@@ -105,6 +107,23 @@ public class OffersServiceImplTest {
         assertThat(expectedOfferList.get(0).getPrice(), is(TEST_OFFER_PRICE));
         assertThat(expectedOfferList.get(0).getCurrency(), is(TEST_OFFER_CURRENCY));
         assertThat(expectedOfferList.get(0).isExpired(), is(false));
+    }
+
+    @Test
+    public void shouldCancelOffer() {
+        when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(oneElementStubOfferList());
+        when(offersRepository.save(any(Offer.class))).thenReturn(stubOffer());
+
+        Offer canceledOffer = offersService.cancelOffer(TEST_OFFER_ID);
+
+        assertThat(canceledOffer.isExpired(), is(true));
+        verify(offersRepository, times(1)).save(canceledOffer);
+    }
+
+    @Test(expected = OffersSystemErrorException.class)
+    public void shouldThrowOffersSystemErrorExceptionIfMoreThanOneOfferIsReturnedForGivenId() {
+        when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(stubOfferList());
+        offersService.findOfferById(TEST_OFFER_ID);
     }
 
     @Test(expected = InvalidCurrencyException.class)

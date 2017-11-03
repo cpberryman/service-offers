@@ -48,6 +48,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongo-java-driver.version}</version>
+        </dependency>
         <!--START: Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,13 +81,6 @@
             <artifactId>fongo</artifactId>
             <version>${fongo.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>${mongo-java-driver.version}</version>
-            <!--<scope>test</scope>-->
         </dependency>
 
         <dependency>

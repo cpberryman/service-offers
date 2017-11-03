@@ -10,10 +10,10 @@ import java.util.List;
  */
 public interface OffersRepository extends MongoRepository<Offer, String> {
 
-    List<Offer> findOfferById(String id);
+    List<Offer> findOfferById(final String id);
 
-    List<Offer> findOffersByPrice(double price);
+    List<Offer> findOffersByPrice(final double price);
 
-    List<Offer> findOffersByCurrency(String currency);
+    List<Offer> findOffersByCurrency(final String currency);
 
 }

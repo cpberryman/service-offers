@@ -2,13 +2,15 @@ package com.berryman.offers.service.impl;
 
 import com.berryman.offers.dao.OffersRepository;
 import com.berryman.offers.exception.InvalidCurrencyException;
+import com.berryman.offers.exception.OffersSystemErrorException;
 import com.berryman.offers.model.Offer;
 import com.berryman.offers.service.OffersService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Currency.getAvailableCurrencies;
 
 /**
  * @author chris berryman.
@@ -19,7 +21,7 @@ public class OffersServiceImpl implements OffersService {
     private OffersRepository offersRepository;
 
     @Override
-    public Offer createOffer(Offer offer) {
+    public Offer createOffer(final Offer offer) {
         return offersRepository.save(offer);
     }
 
@@ -49,7 +51,7 @@ public class OffersServiceImpl implements OffersService {
     }
 
     @Override
-    public List<Offer> findOffersByPrice(double price) {
+    public List<Offer> findOffersByPrice(final double price) {
         return offersRepository.findOffersByPrice(price);
     }
 
@@ -58,18 +60,32 @@ public class OffersServiceImpl implements OffersService {
         if(isValidCurrency(currency)) {
             return offersRepository.findOffersByCurrency(currency);
         } else {
-            throw new InvalidCurrencyException();
+            throw new InvalidCurrencyException(InvalidCurrencyException.INVALID_CURRENCY_ERROR);
         }
+    }
+
+    @Override
+    public Offer cancelOffer(final String id) {
+        List<Offer> offersTemp = offersRepository.findOfferById(id);
+        validateOfferList(offersTemp);
+        Offer offerToCancel = offersTemp.get(0);
+        offerToCancel.setExpired(true);
+        offersRepository.save(offerToCancel);
+        return offerToCancel;
     }
 
     /*lists with offer found by id should only have one element*/
-    private void validateOfferList(List<Offer> offerList) {
+    private void validateOfferList(final List<Offer> offerList) {
         if(offerList.size() > 1) {
-            throw new RuntimeException();
+            throw new OffersSystemErrorException(OffersSystemErrorException.SYSTEM_ERROR);
         }
     }
 
-    private boolean isValidCurrency(String currency) {
-        return Currency.getAvailableCurrencies().stream().filter(c -> c.toString().equals(currency)).count() > 0;
+    private boolean isValidCurrency(final String currency) {
+        return getAvailableCurrencies()
+                .stream()
+                .filter(c -> c.toString().equals(currency))
+                .count() > 0;
     }
+
 }
