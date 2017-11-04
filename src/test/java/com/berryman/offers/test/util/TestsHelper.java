@@ -14,7 +14,6 @@ import java.util.List;
  */
 public final class TestsHelper {
 
-    public static final String TEST_OFFER_JSON = "{\"_id\": \"1\", \"price\": \"18.50\", \"currency\": \"JPY\",\"expired\": false}";
     public static final String TEST_DB_NAME = "test-offers-db";
     public static final String TEST_MAPPING_BASE_PACKAGE_NAME = "com.berryman.offers.dao";
     public static final String TEST_OFFER_ID = "1";
@@ -50,6 +49,51 @@ public final class TestsHelper {
     public static List<Offer> oneElementStubOfferList() {
         List<Offer> offerList = new ArrayList<>();
         offerList.add(stubOffer());
+        return offerList;
+    }
+
+    public static List<Offer> stubActiveOfferList() {
+        List<Offer> offerList = oneElementStubOfferList();
+        final Offer offer = new Offer();
+        offer.setId(ANOTHER_TEST_OFFER_ID);
+        offer.setPrice(ANOTHER_TEST_OFFER_PRICE);
+        offer.setCurrency(TEST_OFFER_CURRENCY);
+        offer.setExpired(false);
+        offerList.add(offer);
+        return offerList;
+    }
+
+    public static List<Offer> stubExpiredOfferList() {
+        List<Offer> offerList = new ArrayList<>();
+        final Offer offer = new Offer();
+        offer.setId(TEST_OFFER_ID);
+        offer.setPrice(TEST_OFFER_PRICE);
+        offer.setCurrency(TEST_OFFER_CURRENCY);
+        offer.setExpired(true);
+        offerList.add(offer);
+        final Offer offer1 = new Offer();
+        offer1.setId(ANOTHER_TEST_OFFER_ID);
+        offer1.setPrice(ANOTHER_TEST_OFFER_PRICE);
+        offer1.setCurrency(TEST_OFFER_CURRENCY);
+        offer1.setExpired(true);
+        offerList.add(offer1);
+        return offerList;
+    }
+
+    public static List<Offer> stubSamePricedOfferList() {
+        List<Offer> offerList = new ArrayList<>();
+        final Offer offer = new Offer();
+        offer.setId(TEST_OFFER_ID);
+        offer.setPrice(TEST_OFFER_PRICE);
+        offer.setCurrency(TEST_OFFER_CURRENCY);
+        offer.setExpired(false);
+        offerList.add(offer);
+        final Offer offer1 = new Offer();
+        offer1.setId(ANOTHER_TEST_OFFER_ID);
+        offer1.setPrice(TEST_OFFER_PRICE);
+        offer1.setCurrency(TEST_OFFER_CURRENCY);
+        offer1.setExpired(true);
+        offerList.add(offer1);
         return offerList;
     }
 

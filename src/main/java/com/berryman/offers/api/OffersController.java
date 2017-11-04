@@ -28,34 +28,34 @@ public class OffersController {
         return new ResponseEntity<>(offersService.createOffer(offer), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/active", method = RequestMethod.GET)
+    @RequestMapping(value = "/active", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<Offer>> getActiveOffers() {
         return new ResponseEntity<>(offersService.findActiveOffers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/expired", method = RequestMethod.GET)
+    @RequestMapping(value = "/expired", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<Offer>> getExpiredOffers() {
         return new ResponseEntity<>(offersService.findExpiredOffers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/find/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Offer> getOfferById(@PathVariable final String id) {
         return new ResponseEntity<>(offersService.findOfferById(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/price/{price}", method = RequestMethod.GET)
-    public ResponseEntity<List<Offer>> getOffersByPrice(final double price) {
+    @RequestMapping(value = "/price/{price}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<List<Offer>> getOffersByPrice(@PathVariable final double price) {
         return new ResponseEntity<>(offersService.findOffersByPrice(price), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/currency/{currency}", method = RequestMethod.GET)
-    public ResponseEntity<List<Offer>> getOffersByCurrency(final String currency) {
+    @RequestMapping(value = "/currency/{currency}", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<List<Offer>> getOffersByCurrency(@PathVariable final String currency) {
         return new ResponseEntity<>(offersService.findOffersByCurrency(currency), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<Offer> cancelOffer(@PathVariable final String id) {
-        return new ResponseEntity<>(offersService.findOfferById(id), HttpStatus.OK);
+        return new ResponseEntity<>(offersService.cancelOffer(id), HttpStatus.OK);
     }
 
 }
