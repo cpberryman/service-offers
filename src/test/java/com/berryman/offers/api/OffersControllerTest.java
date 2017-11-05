@@ -16,7 +16,6 @@ import static com.jayway.jsonassert.impl.matcher.IsCollectionWithSize.hasSize;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -170,7 +169,7 @@ public class OffersControllerTest {
         offer.setExpired(true);
         when(offersService.cancelOffer(TEST_OFFER_ID)).thenReturn(offer);
 
-        mockMvc.perform(put("/offers/cancel/{id}", TEST_OFFER_ID)
+        mockMvc.perform(get("/offers/cancel/{id}", TEST_OFFER_ID)
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))

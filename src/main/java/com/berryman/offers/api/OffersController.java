@@ -74,7 +74,7 @@ public class OffersController {
         return new ResponseEntity<>(offersService.findOffersByCurrency(currency), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.PUT, produces = "application/json")
+    @RequestMapping(value = "/cancel/{id}", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Offer> cancelOffer(@PathVariable final String id) {
         return new ResponseEntity<>(offersService.cancelOffer(id), HttpStatus.OK);
     }
