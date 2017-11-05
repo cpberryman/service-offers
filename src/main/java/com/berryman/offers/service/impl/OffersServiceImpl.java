@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.berryman.offers.util.OffersHelper.OFFER_EXPIRED_ERROR_MESSAGE;
-import static com.berryman.offers.util.OffersHelper.OFFER_NOT_FOUND_ERROR_MESSAGE;
-import static com.berryman.offers.util.OffersHelper.durationTypes;
+import static com.berryman.offers.util.OffersHelper.*;
 import static java.util.Currency.getAvailableCurrencies;
 
 /**
@@ -39,8 +37,8 @@ public class OffersServiceImpl implements OffersService {
             offerExpirationTimer.countdownAndExpireOffer(offer);
             return offersRepository.save(offer);
         } else {
-            LOGGER.warn();
-            throw new DuplicateOfferIdException();
+            LOGGER.warn(DUPLICATE_OFFER_ID_ERROR_MESSAGE + offer.getId());
+            throw new DuplicateOfferIdException(DUPLICATE_OFFER_ID_ERROR_MESSAGE + offer.getId());
         }
 
     }

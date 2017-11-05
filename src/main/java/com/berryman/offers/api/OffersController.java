@@ -1,11 +1,10 @@
 package com.berryman.offers.api;
 
-import com.berryman.offers.exception.InvalidCurrencyException;
-import com.berryman.offers.exception.InvalidDurationTypeException;
-import com.berryman.offers.exception.OfferExpiredException;
-import com.berryman.offers.exception.OfferNotFoundException;
+import com.berryman.offers.exception.*;
 import com.berryman.offers.model.Offer;
 import com.berryman.offers.service.OffersService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,11 @@ public class OffersController {
         try {
             return new ResponseEntity<>(offersService.createOffer(offer), HttpStatus.OK);
         } catch (InvalidCurrencyException e) {
-            return new ResponseEntity<>(INVALID_CURRENCY_ERROR_MESSAGE + offer.getCurrency(), HttpStatus.OK);
+            return new ResponseEntity<>(asJsonString(INVALID_CURRENCY_ERROR_MESSAGE + offer.getCurrency()), HttpStatus.OK);
         } catch (InvalidDurationTypeException e) {
-            return new ResponseEntity<>(INVALID_DURATION_ERROR_MESSAGE + offer.getDurationType(), HttpStatus.OK);
+            return new ResponseEntity<>(asJsonString(INVALID_DURATION_ERROR_MESSAGE + offer.getDurationType()), HttpStatus.OK);
+        } catch (DuplicateOfferIdException e) {
+            return new ResponseEntity<>(asJsonString(DUPLICATE_OFFER_ID_ERROR_MESSAGE + offer.getId()), HttpStatus.OK);
         }
     }
 
@@ -57,9 +58,9 @@ public class OffersController {
         try {
             return new ResponseEntity<>(offersService.findOfferById(id), HttpStatus.OK);
         } catch (OfferNotFoundException e) {
-            return new ResponseEntity<>(OFFER_NOT_FOUND_ERROR_MESSAGE + id, HttpStatus.OK);
+            return new ResponseEntity<>(asJsonString(OFFER_NOT_FOUND_ERROR_MESSAGE + id), HttpStatus.OK);
         } catch (OfferExpiredException e) {
-            return new ResponseEntity<>(OFFER_EXPIRED_ERROR_MESSAGE + id, HttpStatus.OK);
+            return new ResponseEntity<>(asJsonString(OFFER_EXPIRED_ERROR_MESSAGE + id), HttpStatus.OK);
         }
     }
 
@@ -76,6 +77,17 @@ public class OffersController {
     @RequestMapping(value = "/cancel/{id}", method = RequestMethod.PUT, produces = "application/json")
     public ResponseEntity<Offer> cancelOffer(@PathVariable final String id) {
         return new ResponseEntity<>(offersService.cancelOffer(id), HttpStatus.OK);
+    }
+
+    private String asJsonString(String message) {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = "";
+        try {
+            jsonString = mapper.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            LOGGER.error(JSON_PROCESSING_ERROR_MESSAGE);
+        }
+        return jsonString;
     }
 
 }

@@ -124,6 +124,13 @@ public class OffersServiceImplTest {
         verify(offersRepository, times(1)).save(canceledOffer);
     }
 
+    @Test(expected = DuplicateOfferIdException.class)
+    public void shouldThrowDuplicateOfferIdExceptionIfOfferExistsInDbWithSameIdAsOfferToAdd() {
+        final Offer offer = stubOffer();
+        when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(oneElementStubOfferList());
+        offersService.createOffer(offer);
+    }
+
     @Test(expected = OfferNotFoundException.class)
     public void shouldThrowOfferNotFoundExceptionIfOfferNotInDb() {
         when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(new ArrayList<>());

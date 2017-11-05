@@ -18,6 +18,8 @@ public class OffersHelper {
     public static final String OFFER_EXPIRED_ERROR_MESSAGE = "Offer is expired with id: ";
     public static final String INVALID_CURRENCY_ERROR_MESSAGE = "Offer has invalid currency: ";
     public static final String INVALID_DURATION_ERROR_MESSAGE = "Offer has invalid duration: ";
+    public static final String DUPLICATE_OFFER_ID_ERROR_MESSAGE = "Offer already exists with id: ";
+    public static final String JSON_PROCESSING_ERROR_MESSAGE = "Could not process json string";
 
     public static Set<String> durationTypes;
 
