@@ -22,8 +22,21 @@ public final class TestsHelper {
     public static final String TEST_OFFER_CURRENCY_INVALID = "foo!";
     public static final double TEST_OFFER_PRICE = 18.50;
     public static final double ANOTHER_TEST_OFFER_PRICE = 22.00;
+    public static final String TEST_OFFER_DURATION_TYPE_MONTH = "MONTH";
+    public static final String TEST_OFFER_DURATION_TYPE_DAY = "DAY";
+    public static final int TEST_OFFER_DURATION_NUMBER_FOR_MONTH = 1;
+    public static final int TEST_OFFER_DURATION_NUMBER_FOR_DAY = 2;
+    public static final String TEST_OFFER_DURATION_TYPE_INVALID = "bar!";
+    public static final Long EXPECTED_SECONDS_FOR_MONTH = 2592000L;
+    public static final Long EXPECTED_SECONDS_FOR_DAY = 172800L;
+    public static final Long TEST_SECONDS_DURATION_FOR_DAY = 2000L;
+    public static final Long DELAY_TO_ALLOW_RUN_METHOD_TO_EXECUTE = 3000L;
 
     public static final MediaType APPLICATION_JSON = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype());
+
+    private TestsHelper() {
+        //util class
+    }
 
     public static Offer stubOffer() {
         final Offer offer = new Offer();
@@ -31,6 +44,19 @@ public final class TestsHelper {
         offer.setPrice(TEST_OFFER_PRICE);
         offer.setCurrency(TEST_OFFER_CURRENCY);
         offer.setExpired(false);
+        offer.setDurationType(TEST_OFFER_DURATION_TYPE_MONTH);
+        offer.setDurationNumber(TEST_OFFER_DURATION_NUMBER_FOR_MONTH);
+        return offer;
+    }
+
+    public static Offer stubOfferWithDayDuration() {
+        final Offer offer = new Offer();
+        offer.setId(TEST_OFFER_ID);
+        offer.setPrice(TEST_OFFER_PRICE);
+        offer.setCurrency(TEST_OFFER_CURRENCY);
+        offer.setExpired(false);
+        offer.setDurationType(TEST_OFFER_DURATION_TYPE_DAY);
+        offer.setDurationNumber(TEST_OFFER_DURATION_NUMBER_FOR_DAY);
         return offer;
     }
 

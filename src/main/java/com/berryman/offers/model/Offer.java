@@ -16,6 +16,8 @@ public class Offer {
     private String currency;
     private double price;
     private boolean expired;
+    private String durationType;
+    private int durationNumber;
 
     public String getId() {
         return id;
@@ -49,6 +51,22 @@ public class Offer {
         this.expired = expired;
     }
 
+    public String getDurationType() {
+        return durationType;
+    }
+
+    public void setDurationType(String durationType) {
+        this.durationType = durationType;
+    }
+
+    public int getDurationNumber() {
+        return durationNumber;
+    }
+
+    public void setDurationNumber(int durationNumber) {
+        this.durationNumber = durationNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,6 +80,8 @@ public class Offer {
                 .append(expired, offer.expired)
                 .append(id, offer.id)
                 .append(currency, offer.currency)
+                .append(durationType, offer.durationType)
+                .append(durationNumber, offer.durationNumber)
                 .isEquals();
     }
 
@@ -72,6 +92,8 @@ public class Offer {
                 .append(currency)
                 .append(price)
                 .append(expired)
+                .append(durationType)
+                .append(durationNumber)
                 .toHashCode();
     }
 
@@ -82,6 +104,8 @@ public class Offer {
                 ", currency='" + currency + '\'' +
                 ", price=" + price +
                 ", expired=" + expired +
+                ", durationType='" + durationType + '\'' +
+                ", durationNumber='" + durationNumber + '\'' +
                 '}';
     }
 

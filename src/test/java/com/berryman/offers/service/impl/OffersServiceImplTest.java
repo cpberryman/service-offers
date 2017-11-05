@@ -1,15 +1,16 @@
 package com.berryman.offers.service.impl;
 
 import com.berryman.offers.dao.OffersRepository;
-import com.berryman.offers.exception.InvalidCurrencyException;
-import com.berryman.offers.exception.OffersSystemErrorException;
+import com.berryman.offers.exception.*;
 import com.berryman.offers.model.Offer;
+import com.berryman.offers.timer.OfferExpirationTimer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.berryman.offers.test.util.TestsHelper.*;
@@ -28,6 +29,9 @@ public class OffersServiceImplTest {
 
     @Mock
     private OffersRepository offersRepository;
+
+    @Mock
+    private OfferExpirationTimer offersExpirationTimer;
 
     @InjectMocks
     private OffersServiceImpl offersService;
@@ -120,6 +124,20 @@ public class OffersServiceImplTest {
         verify(offersRepository, times(1)).save(canceledOffer);
     }
 
+    @Test(expected = OfferNotFoundException.class)
+    public void shouldThrowOfferNotFoundExceptionIfOfferNotInDb() {
+        when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(new ArrayList<>());
+        offersService.findOfferById(TEST_OFFER_ID);
+    }
+
+    @Test(expected = OfferExpiredException.class)
+    public void shouldThrowOfferExpiredExceptionIfOfferExpired() {
+        List<Offer> offerList = new ArrayList<>();
+        offerList.add(stubExpiredOfferList().get(0));
+        when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(offerList);
+        offersService.findOfferById(TEST_OFFER_ID);
+    }
+
     @Test(expected = OffersSystemErrorException.class)
     public void shouldThrowOffersSystemErrorExceptionIfMoreThanOneOfferIsReturnedForGivenId() {
         when(offersRepository.findOfferById(TEST_OFFER_ID)).thenReturn(stubOfferList());
@@ -129,6 +147,13 @@ public class OffersServiceImplTest {
     @Test(expected = InvalidCurrencyException.class)
     public void shouldThrowInvalidCurrencyExceptionIfCurrencyNotInSet() {
         offersService.findOffersByCurrency(TEST_OFFER_CURRENCY_INVALID);
+    }
+
+    @Test(expected = InvalidDurationTypeException.class)
+    public void shouldThrowInvalidDurationExceptionIfDurationNotInSet() {
+        final Offer offer = stubOffer();
+        offer.setDurationType(TEST_OFFER_DURATION_TYPE_INVALID);
+        offersService.createOffer(offer);
     }
 
 }
